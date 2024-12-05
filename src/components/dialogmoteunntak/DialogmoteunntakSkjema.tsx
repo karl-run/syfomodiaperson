@@ -1,7 +1,6 @@
 import React from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { moteoversiktRoutePath } from "@/routers/AppRouter";
-import { useDialogmotekandidat } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
 import {
   CreateUnntakDTO,
   UnntakArsak,
@@ -70,7 +69,6 @@ export interface DialogmoteunntakSkjemaValues {
 
 const DialogmoteunntakSkjema = () => {
   const personIdent = useValgtPersonident();
-  const { isKandidat } = useDialogmotekandidat();
   const settDialogmoteunntak = useSettDialogmoteunntak();
   const {
     register,
@@ -79,9 +77,11 @@ const DialogmoteunntakSkjema = () => {
     formState: { errors },
   } = useForm<DialogmoteunntakSkjemaValues>();
 
+  /*
   if (!isKandidat || settDialogmoteunntak.isSuccess) {
     return <Navigate to={moteoversiktRoutePath} />;
   }
+*/
 
   const isArsakStatistikkVisible =
     watch("arsak") === UnntakArsak.FORVENTET_FRISKMELDING_INNEN_28UKER;
