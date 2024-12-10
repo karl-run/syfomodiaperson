@@ -14,7 +14,10 @@ const texts = {
 
 export const AktivitetskravSide = () => {
   const { hasActiveOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
-  const { data } = useAktivitetskravQuery();
+  const { data } = useAktivitetskravQuery({
+    refetchOnWindowFocus: "always",
+    refetchOnMount: "always",
+  });
 
   const aktivitetskrav = data.find(
     (aktivitetskrav) =>

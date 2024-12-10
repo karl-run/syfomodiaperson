@@ -1,7 +1,7 @@
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { ISMEROPPFOLGING_ROOT } from "@/apiConstants";
 import { get } from "@/api/axios";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 import { minutesToMillis } from "@/utils/timeUtils";
 import { SenOppfolgingKandidatResponseDTO } from "@/data/senoppfolging/senOppfolgingTypes";
 
@@ -9,7 +9,12 @@ export const senOppfolgingKandidatQueryKeys = {
   senOppfolgingKandidat: (fnr: string) => ["senOppfolgingKandidat", fnr],
 };
 
-export const useSenOppfolgingKandidatQuery = () => {
+type QueryOptions = Pick<
+  UseQueryOptions<SenOppfolgingKandidatResponseDTO[]>,
+  "refetchOnWindowFocus" | "refetchOnMount"
+>;
+
+export const useSenOppfolgingKandidatQuery = (options?: QueryOptions) => {
   const fnr = useValgtPersonident();
   const path = `${ISMEROPPFOLGING_ROOT}/senoppfolging/kandidater`;
   const getSenOppfolgingKandidat = () =>
@@ -20,6 +25,7 @@ export const useSenOppfolgingKandidatQuery = () => {
     queryFn: getSenOppfolgingKandidat,
     enabled: !!fnr,
     staleTime: minutesToMillis(60 * 12),
+    ...options,
   });
 
   return {

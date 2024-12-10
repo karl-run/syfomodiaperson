@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 import { get } from "@/api/axios";
 import { ISDIALOGMOTEKANDIDAT_ROOT } from "@/apiConstants";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
@@ -35,7 +35,12 @@ export const useIsDialogmoteKandidatWithoutFerdigstiltReferat = (
   );
 };
 
-export const useDialogmotekandidat = () => {
+type QueryOptions = Pick<
+  UseQueryOptions<DialogmotekandidatDTO>,
+  "refetchOnWindowFocus" | "refetchOnMount"
+>;
+
+export const useDialogmotekandidat = (options?: QueryOptions) => {
   const personident = useValgtPersonident();
   const path = `${ISDIALOGMOTEKANDIDAT_ROOT}/kandidat/personident`;
   const fetchKandidat = () => get<DialogmotekandidatDTO>(path, personident);
@@ -43,6 +48,7 @@ export const useDialogmotekandidat = () => {
     queryKey: dialogmotekandidatQueryKeys.kandidat(personident),
     queryFn: fetchKandidat,
     enabled: !!personident,
+    ...options,
   });
 
   const isNoFerdigstiltDialogmoteReferatAfterKandidatAt =

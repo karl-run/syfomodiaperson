@@ -70,7 +70,10 @@ export interface DialogmoteunntakSkjemaValues {
 
 const DialogmoteunntakSkjema = () => {
   const personIdent = useValgtPersonident();
-  const { isKandidat } = useDialogmotekandidat();
+  const { isKandidat } = useDialogmotekandidat({
+    refetchOnWindowFocus: "always",
+    refetchOnMount: "always",
+  });
   const settDialogmoteunntak = useSettDialogmoteunntak();
   const {
     register,

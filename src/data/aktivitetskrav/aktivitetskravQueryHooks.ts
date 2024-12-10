@@ -5,7 +5,7 @@ import {
   AktivitetskravDTO,
   AktivitetskravHistorikkDTO,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 
 export const aktivitetskravQueryKeys = {
   aktivitetskrav: (personident: string) => ["aktivitetskrav", personident],
@@ -16,7 +16,12 @@ export const aktivitetskravQueryKeys = {
   ],
 };
 
-export const useAktivitetskravQuery = () => {
+type QueryOptions = Pick<
+  UseQueryOptions<AktivitetskravDTO[]>,
+  "refetchOnWindowFocus" | "refetchOnMount"
+>;
+
+export const useAktivitetskravQuery = (options?: QueryOptions) => {
   const personident = useValgtPersonident();
   const path = `${ISAKTIVITETSKRAV_ROOT}/aktivitetskrav/personident`;
   const fetchAktivitetskrav = () => get<AktivitetskravDTO[]>(path, personident);
@@ -25,6 +30,7 @@ export const useAktivitetskravQuery = () => {
     queryKey: aktivitetskravQueryKeys.aktivitetskrav(personident),
     queryFn: fetchAktivitetskrav,
     enabled: !!personident,
+    ...options,
   });
 
   return {

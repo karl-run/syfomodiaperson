@@ -31,7 +31,10 @@ export default function SenOppfolging(): ReactElement {
     data: kandidater,
     isError,
     isPending,
-  } = useSenOppfolgingKandidatQuery();
+  } = useSenOppfolgingKandidatQuery({
+    refetchOnWindowFocus: "always",
+    refetchOnMount: "always",
+  });
   const [isVurderingSubmitted, setIsVurderingSubmitted] =
     useState<boolean>(false);
   const [kandidat, ...tidligereKandidater] = kandidater;
